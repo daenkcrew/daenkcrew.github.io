@@ -42,4 +42,4 @@ permalink: /about/
               </li>
             </ul>
             <p>Content generated using <a href="https://github.com/jekyll/jekyll">jekyll</a> with <a href="https://github.com/jekyll/minima">minima</a> theme.</p>
-          </div>
+          
