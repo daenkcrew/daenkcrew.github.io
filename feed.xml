@@ -1,0 +1,706 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.1">Jekyll</generator><link href="http://blog.zackad.com/feed.xml" rel="self" type="application/atom+xml" /><link href="http://blog.zackad.com/" rel="alternate" type="text/html" /><updated>2018-05-05T10:45:00+07:00</updated><id>http://blog.zackad.com/</id><title type="html">ZackadDev</title><subtitle>I'm a simple man. I do what I want and what I could. Otherwise it's a trial and error.
+    </subtitle><author><name>zackad</name></author><entry><title type="html">How to Select Fastest Ubuntu Repository Mirror</title><link href="http://blog.zackad.com/en/2018/01/18/how-to-select-fastest-ubuntu-repository-mirror.html" rel="alternate" type="text/html" title="How to Select Fastest Ubuntu Repository Mirror" /><published>2018-01-18T00:00:00+07:00</published><updated>2018-01-18T00:00:00+07:00</updated><id>http://blog.zackad.com/en/2018/01/18/how-to-select-fastest-ubuntu-repository-mirror</id><content type="html" xml:base="http://blog.zackad.com/en/2018/01/18/how-to-select-fastest-ubuntu-repository-mirror.html">&lt;p&gt;Ubuntu has so many mirror repository we can choose. Sometimes the mirror exists in our country that near with our internet provider.&lt;/p&gt;
+        &lt;h2 id=&quot;update&quot;&gt;Update&lt;/h2&gt;
+        &lt;blockquote&gt;
+        &lt;p&gt;Thank to &lt;a href=&quot;https://askubuntu.com/a/9035/562900&quot;&gt;this answer&lt;/a&gt; on askubuntu.com we can automatically select fastest (maybe) mirror based on our geographic location.&lt;/p&gt;
+        &lt;/blockquote&gt;
+        &lt;p&gt;This configuration will automatically select best mirror based on our geographic location. However, this doesn’t necessary mean the fastest server. Add following entry at the top of &lt;code class=&quot;highlighter-rouge&quot;&gt;/etc/apt/source.list&lt;/code&gt; file. You may delete other entry if you wish.&lt;/p&gt;
+        &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;deb mirror://mirrors.ubuntu.com/mirrors.txt xenial main restricted universe multiverse
+        deb mirror://mirrors.ubuntu.com/mirrors.txt xenial-updates main restricted universe multiverse
+        deb mirror://mirrors.ubuntu.com/mirrors.txt xenial-backports main restricted universe multiverse
+        deb mirror://mirrors.ubuntu.com/mirrors.txt xenial-security main restricted universe multiverse
+        &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+        &lt;p&gt;Change &lt;code class=&quot;highlighter-rouge&quot;&gt;xenial&lt;/code&gt; part with your ubuntu version such as &lt;em&gt;trusty, artful, bionic&lt;/em&gt;.&lt;/p&gt;
+        &lt;hr /&gt;
+        &lt;blockquote&gt;
+        &lt;p&gt;The following is for other option to select ubuntu mirror.&lt;/p&gt;
+        &lt;/blockquote&gt;
+        &lt;h2 id=&quot;requirements&quot;&gt;Requirements&lt;/h2&gt;
+        &lt;ul&gt;
+        &lt;li&gt;Python with pip package manager&lt;/li&gt;
+        &lt;li&gt;Internet connection (obviously)&lt;/li&gt;
+        &lt;/ul&gt;
+        &lt;h2 id=&quot;installation&quot;&gt;Installation&lt;/h2&gt;
+        &lt;ul&gt;
+        &lt;li&gt;Installation from pip (python package manager)&lt;/li&gt;
+        &lt;/ul&gt;
+        &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;pip &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;apt-select
+        &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+        &lt;ul&gt;
+        &lt;li&gt;Manual installation with git&lt;/li&gt;
+        &lt;/ul&gt;
+        &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git clone https://github.com/jblakeman/apt-select
+        python apt-select/setup.py &lt;span class=&quot;nb&quot;&gt;install&lt;/span&gt;
+        &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+        &lt;h2 id=&quot;usage&quot;&gt;Usage&lt;/h2&gt;
+        &lt;p&gt;Open terminal and run &lt;code class=&quot;highlighter-rouge&quot;&gt;apt-select&lt;/code&gt; command. By default, if country code is not provided it will select mirror from US (united stated). Available options are:&lt;/p&gt;
+        &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;usage: apt-select [-h] [-C [COUNTRY]] [-t [NUMBER]] [-m [STATUS] | -p]
+        [-c | -l]
+        Find the fastest Ubuntu apt mirrors.
+        Generate new sources.list file.
+        optional arguments:
+        -h, --help            show this help message and exit
+        -C [COUNTRY], --country [COUNTRY]
+        specify a country to test its list of mirrors
+        used to match country list file names found at mirrors.ubuntu.com
+        COUNTRY should follow ISO 3166-1 alpha-2 format
+        default: US
+        -t [NUMBER], --top-number [NUMBER]
+        specify number of mirrors to return
+        default: 1
+        -m [STATUS], --min-status [STATUS]
+        return mirrors with minimum status
+        choices:
+        up-to-date
+        one-day-behind
+        two-days-behind
+        one-week-behind
+        unknown
+        default: up-to-date
+        -p, --ping-only       rank mirror(s) by latency only, disregard status(es)
+        cannot be used with -m/--min-status
+        -c, --choose          choose mirror from a list
+        requires -t/--top-num NUMBER where NUMBER &amp;gt; 1
+        -l, --list            print list of mirrors only, don't generate file
+        cannot be used with -c/--choose
+        &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+        &lt;p&gt;Copy the generated file into &lt;code class=&quot;highlighter-rouge&quot;&gt;/etc/apt/source.list&lt;/code&gt;.&lt;/p&gt;
+        &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# Backup current sources.list&lt;/span&gt;
+        &lt;span class=&quot;nb&quot;&gt;cp&lt;/span&gt; /etc/apt/sources.list /etc/apt/sources.list.backup
+        &lt;span class=&quot;c&quot;&gt;# Copy the generated file&lt;/span&gt;
+        &lt;span class=&quot;nb&quot;&gt;cp &lt;/span&gt;sources.list /etc/apt/sources.list
+        &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>zackad</name></author><category term="en" /><category term="ubuntu" /><category term="mirror" /><summary type="html">Ubuntu has so many mirror repository we can choose. Sometimes the mirror exists in our country that near with our internet provider.</summary></entry><entry><title type="html">Using Gulp To Automatically Run PHPUnit Test After Saving File</title><link href="http://blog.zackad.com/en/2017/12/23/using-gulp-to-automatically-run-phpunit-test-after-saving-file.html" rel="alternate" type="text/html" title="Using Gulp To Automatically Run PHPUnit Test After Saving File" /><published>2017-12-23T00:00:00+07:00</published><updated>2017-12-23T00:00:00+07:00</updated><id>http://blog.zackad.com/en/2017/12/23/using-gulp-to-automatically-run-phpunit-test-after-saving-file</id><content type="html" xml:base="http://blog.zackad.com/en/2017/12/23/using-gulp-to-automatically-run-phpunit-test-after-saving-file.html">&lt;p&gt;One of the most annoying as developer/programmer is to do repetitive task over and over again. Why not just automate it? We are programmer right? It’s our job to solve this kind of problem.&lt;/p&gt;
+        &lt;p&gt;The usual workflow of testing with &lt;code class=&quot;highlighter-rouge&quot;&gt;phpunit&lt;/code&gt; is &lt;em&gt;write test -&amp;gt; run phpunit -&amp;gt; edit source -&amp;gt; run php unit -&amp;gt; repeat&lt;/em&gt;. As we can see, in a single cyclus we run phpunit twice just to check if our source is passing the test. What if after editing the source the test is still failed? We need to edit the source and run phpunit again to check if the test is passing. This kind of repetitive task of cource can be automated right?&lt;/p&gt;
+        &lt;h2 id=&quot;requirement&quot;&gt;Requirement&lt;/h2&gt;
+        &lt;p&gt;&lt;strong&gt;- NodeJS&lt;/strong&gt; with npm&lt;/p&gt;
+        &lt;h2 id=&quot;installation&quot;&gt;Installation&lt;/h2&gt;
+        &lt;p&gt;Open terminal and change to project directory and install gulp with npm&lt;/p&gt;
+        &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;npm &lt;span class=&quot;nb&quot;&gt;install&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--save-dev&lt;/span&gt; gulp
+        &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+        &lt;h2 id=&quot;configuration&quot;&gt;Configuration&lt;/h2&gt;
+        &lt;p&gt;Create a new file with &lt;code class=&quot;highlighter-rouge&quot;&gt;gulpfile.js&lt;/code&gt; name and paste code below.&lt;/p&gt;
+        &lt;div class=&quot;language-javascript highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;gulp&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'gulp'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;exec&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'child_process'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;exec&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;nx&quot;&gt;gulp&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;task&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'phpunit'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;nx&quot;&gt;exec&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'vendor/bin/phpunit --colors=always'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;error&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;stdout&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;stdout&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+        &lt;span class=&quot;nx&quot;&gt;gulp&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;task&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'default'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;nx&quot;&gt;gulp&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;watch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'**/*.php'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;debounceDelay&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'phpunit'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]);&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+        &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+        &lt;blockquote&gt;
+        &lt;p&gt;Note: in this configuration we assume that phpunit is installed with composer. If your phpunit is installed globally, you can just type &lt;code class=&quot;highlighter-rouge&quot;&gt;phpunit&lt;/code&gt; as exec parameter.&lt;/p&gt;
+        &lt;/blockquote&gt;
+        &lt;h2 id=&quot;run-phpunit-test-after-saving-file&quot;&gt;Run phpunit test after saving file&lt;/h2&gt;
+        &lt;p&gt;To run gulp just type &lt;code class=&quot;highlighter-rouge&quot;&gt;node_modules/.bin/gulp&lt;/code&gt; from ternimal. Alternatively we can store this task into &lt;code class=&quot;highlighter-rouge&quot;&gt;package.json&lt;/code&gt; as npm script.&lt;/p&gt;
+        &lt;div class=&quot;language-json highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;err&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+        &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;scripts&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+        &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;start&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;gulp&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+        &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+        &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+        &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+        &lt;p&gt;Now, everytime we need to run gulp we can invoke it with &lt;code class=&quot;highlighter-rouge&quot;&gt;npm start&lt;/code&gt;. With this, after we edit php source and save it, the phpunit will be automatically run and we can monitor the result from terminal.&lt;/p&gt;</content><author><name>zackad</name></author><category term="en" /><category term="automation" /><category term="tool" /><summary type="html">One of the most annoying as developer/programmer is to do repetitive task over and over again. Why not just automate it? We are programmer right? It’s our job to solve this kind of problem.</summary></entry><entry><title type="html">Menghitung Usability Factor Arah Runway Bandara dengan MySQL Database</title><link href="http://blog.zackad.com/id/2017/11/15/menghitung-usability-factor-arah-runway-bandara-dengan-mysql-database.html" rel="alternate" type="text/html" title="Menghitung Usability Factor Arah Runway Bandara dengan MySQL Database" /><published>2017-11-15T00:00:00+07:00</published><updated>2017-11-15T00:00:00+07:00</updated><id>http://blog.zackad.com/id/2017/11/15/menghitung-usability-factor-arah-runway-bandara-dengan-mysql-database</id><content type="html" xml:base="http://blog.zackad.com/id/2017/11/15/menghitung-usability-factor-arah-runway-bandara-dengan-mysql-database.html">&lt;p&gt;Salah satu tahap dalam perencanaan bandara adalah menentukan arah &lt;em&gt;runway&lt;/em&gt; dengan memperhatikan kondisi angin di lokasi. Dalam artikel singkat ini akan dijelaskan bagaimana menghitung &lt;em&gt;usability factor&lt;/em&gt; dengan menggunakan database sebagai alat bantu analisis.&lt;/p&gt;
+        &lt;h2 id=&quot;apa-saja-yang-dibutuhkan&quot;&gt;Apa saja yang dibutuhkan?&lt;/h2&gt;
+        &lt;ol&gt;
+        &lt;li&gt;Data arah angin selama 5 tahun terakhir sesuai dengan yang disyaratkan oleh ICAO (International Civil Aviation Organisation). Data ini bisa diperoleh di stasiun pengamatan BMKG terdekat dengan lokasi.&lt;/li&gt;
+        &lt;li&gt;MySQL database sebagai alat bantu analisis&lt;/li&gt;
+        &lt;li&gt;MySQL client sebagai antar muka (interface) user dengan system database. (HeidiSQL, MySQL Workbench)&lt;/li&gt;
+        &lt;/ol&gt;
+        &lt;h2 id=&quot;tahap-1--mempersiapkan-dan-memformat-database&quot;&gt;Tahap 1 — Mempersiapkan dan memformat database&lt;/h2&gt;
+        &lt;p&gt;Pada tahap ini, kita akan mempersiapkan tabel sebagai tempat penyimpanan data. Adapun tabel yang dibutuhkan meliputi :&lt;/p&gt;
+        &lt;ul&gt;
+        &lt;li&gt;tabel data angin&lt;/li&gt;
+        &lt;li&gt;tabel rencana arah runway&lt;/li&gt;
+        &lt;li&gt;tabel waktu pencatatan data angin (opsional)&lt;/li&gt;
+        &lt;li&gt;tabel lokasi stasiun pengamatan (opsional)&lt;/li&gt;
+        &lt;/ul&gt;
+        &lt;blockquote&gt;
+        &lt;p&gt;&lt;strong&gt;Catatan:&lt;/strong&gt; tabel yang bersifat opsional akan berguna ketika kita akan melakukan analisis windrose dengan menggunakan aplikasi &lt;strong&gt;WRPlot View&lt;/strong&gt;.&lt;/p&gt;
+        &lt;/blockquote&gt;
+        &lt;p&gt;Dari daftar tabel diatas, kita bisa membuat tabel baru dengan perintah:&lt;/p&gt;
+        &lt;div class=&quot;language-sql highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;-- Membuat tabel data angin&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;CREATE&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;TABLE&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;IF&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;NOT&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;EXISTS&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'data_angin'&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;-- Kolom opsional, berguna untuk export data ke format .lakes&lt;/span&gt;
+        &lt;span class=&quot;s1&quot;&gt;'id_sta_pengamatan'&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;11&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;DEFAULT&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;NULL&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;   &lt;span class=&quot;c1&quot;&gt;-- id dari tabel stasiun pengamatan&lt;/span&gt;
+        &lt;span class=&quot;s1&quot;&gt;'tanggal'&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;date&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;DEFAULT&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;NULL&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;                &lt;span class=&quot;c1&quot;&gt;-- format 'YYYY-MM-DD'&lt;/span&gt;
+        &lt;span class=&quot;s1&quot;&gt;'kecepatan_angin'&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;double&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;DEFAULT&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;NULL&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;      &lt;span class=&quot;c1&quot;&gt;-- satuan Knot&lt;/span&gt;
+        &lt;span class=&quot;s1&quot;&gt;'arah_angin'&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;11&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;DEFAULT&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;NULL&lt;/span&gt;           &lt;span class=&quot;c1&quot;&gt;-- satuan derajat (°) dengan 0° = utara&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ENGINE&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;InnoDB&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;DEFAULT&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;CHARSET&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;utf8&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;-- Membuat tabel arah runway&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;CREATE&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;TABLE&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;IF&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;NOT&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;EXISTS&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'arah_runway'&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+        &lt;span class=&quot;s1&quot;&gt;''&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ENGINE&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;InnoDB&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;DEFAULT&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;CHARSET&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;utf8&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+        &lt;h2 id=&quot;tahap-2--menginput-data&quot;&gt;Tahap 2 — Menginput data&lt;/h2&gt;
+        &lt;h2 id=&quot;tahap-3--membuat-fungsi-analisis&quot;&gt;Tahap 3 — Membuat fungsi analisis&lt;/h2&gt;
+        &lt;div class=&quot;language-sql highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;-- Overwrite existing function&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;DROP&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;FUNCTION&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;IF&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;EXISTS&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;`is_crosswind`&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;DELIMITER&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;//&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;-- Check if wind component is a crosswind to runway direction based on tresshold value&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;CREATE&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;FUNCTION&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;`is_crosswind`&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+        &lt;span class=&quot;nv&quot;&gt;`tresshold`&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;DOUBLE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;         &lt;span class=&quot;c1&quot;&gt;-- Knot&lt;/span&gt;
+        &lt;span class=&quot;nv&quot;&gt;`runwayDirection`&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;DOUBLE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;   &lt;span class=&quot;c1&quot;&gt;-- Degree (°)&lt;/span&gt;
+        &lt;span class=&quot;nv&quot;&gt;`windDirection`&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;DOUBLE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;     &lt;span class=&quot;c1&quot;&gt;-- Degree (°)&lt;/span&gt;
+        &lt;span class=&quot;nv&quot;&gt;`windSpeed`&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;DOUBLE&lt;/span&gt;          &lt;span class=&quot;c1&quot;&gt;-- Knot&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;-- Return 1 if crosswind, 0 if not&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;RETURNS&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;integer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;LANGUAGE&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;SQL&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;DETERMINISTIC&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;CONTAINS&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;SQL&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;SQL&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;SECURITY&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;DEFINER&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;COMMENT&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;''&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;BEGIN&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;declare&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;angelDeg&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;double&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;declare&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;angelRad&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;double&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;declare&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;crossWind&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;double&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;-- Calculate minimum angel between 2 crossing line&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;-- https://math.stackexchange.com/questions/341749/how-to-get-the-minimum-angle-between-two-crossing-lines&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;angelDeg&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;abs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;abs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;`runwayDirection`&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;`windDirection`&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;180&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;-- convert angel Degree to Radian&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;angelRad&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;180&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;angelDeg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;crossWind&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sin&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;angelRad&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;`windSpeed`&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;crossWind&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;`tresshold`&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;then&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;END&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;//&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;DELIMITER&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+        &lt;h2 id=&quot;tahap-4--menghitung-usability-factor&quot;&gt;Tahap 4 — Menghitung usability factor&lt;/h2&gt;
+        &lt;h2 id=&quot;referensi&quot;&gt;Referensi&lt;/h2&gt;
+        &lt;ul&gt;
+        &lt;li&gt;http://www.archerfieldairport.com.au/Downloads/Masterplan2011/TP1_Wind%20Usability%20Analysis.pdf&lt;/li&gt;
+        &lt;/ul&gt;</content><author><name>zackad</name></author><category term="id" /><summary type="html">Salah satu tahap dalam perencanaan bandara adalah menentukan arah runway dengan memperhatikan kondisi angin di lokasi. Dalam artikel singkat ini akan dijelaskan bagaimana menghitung usability factor dengan menggunakan database sebagai alat bantu analisis.</summary></entry><entry><title type="html">Dengerin Spotify Tanpa Iklan Di PC (No crack, no premium)</title><link href="http://blog.zackad.com/id/2017/11/12/dengerin-spotify-tanpa-iklan-no-crack-no-premium.html" rel="alternate" type="text/html" title="Dengerin Spotify Tanpa Iklan Di PC (No crack, no premium)" /><published>2017-11-12T00:00:00+07:00</published><updated>2017-11-12T00:00:00+07:00</updated><id>http://blog.zackad.com/id/2017/11/12/dengerin-spotify-tanpa-iklan-no-crack-no-premium</id><content type="html" xml:base="http://blog.zackad.com/id/2017/11/12/dengerin-spotify-tanpa-iklan-no-crack-no-premium.html">&lt;p&gt;Inilah cara paling mudah dengerin spotify tanpa terganggu iklan. Tanpa instal software tambahan, tanpa upgrade ke premium, dan tanpa bajak akun punya orang lain.&lt;/p&gt;
+        &lt;blockquote&gt;
+        &lt;p&gt;&lt;strong&gt;Disclaimer:&lt;/strong&gt; cara ini tidak mengaktifkan fitur premium yang lain seperti offline mode, high quality streaming, dll.&lt;/p&gt;
+        &lt;/blockquote&gt;
+        &lt;h2 id=&quot;daftar-host-list-yang-akan-di-blok&quot;&gt;Daftar host list yang akan di blok&lt;/h2&gt;
+        &lt;ul&gt;
+        &lt;li&gt;Buka web browser dan akses &lt;code class=&quot;highlighter-rouge&quot;&gt;https://github.com/zackad/dotfiles/blob/master/hosts.d/ads_spotify.conf&lt;/code&gt;&lt;/li&gt;
+        &lt;li&gt;Copy isi file tersebut (kurang lebih seperti dibawah ini)&lt;/li&gt;
+        &lt;/ul&gt;
+        &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# BLock ads host for spotify
+        # host list taken from https://www.reddit.com/r/Piracy/comments/4kn6rq/comprehensive_guide_to_blocking_ads_on_spotify/
+        127.0.0.1       adclick.g.doublecklick.net
+        127.0.0.1       adeventtracker.spotify.com
+        127.0.0.1       ads-fa.spotify.com
+        127.0.0.1       analytics.spotify.com
+        127.0.0.1       audio2.spotify.com
+        127.0.0.1       b.scorecardresearch.com
+        127.0.0.1       bounceexchange.com
+        127.0.0.1       bs.serving-sys.com
+        127.0.0.1       content.bitsontherun.com
+        127.0.0.1       core.insightexpressai.com
+        127.0.0.1       crashdump.spotify.com
+        127.0.0.1       d2gi7ultltnc2u.cloudfront.net
+        127.0.0.1       d3rt1990lpmkn.cloudfront.net
+        127.0.0.1       desktop.spotify.com
+        127.0.0.1       doubleclick.net
+        127.0.0.1       ds.serving-sys.com
+        127.0.0.1       googleadservices.com
+        127.0.0.1       googleads.g.doubleclick.net
+        127.0.0.1       gtssl2-ocsp.geotrust.com
+        127.0.0.1       js.moatads.com
+        127.0.0.1       log.spotify.com
+        127.0.0.1       media-match.com
+        127.0.0.1       omaze.com
+        127.0.0.1       open.spotify.com
+        127.0.0.1       pagead46.l.doubleclick.net
+        127.0.0.1       pagead2.googlesyndication.com
+        127.0.0.1       partner.googleadservices.com
+        127.0.0.1       pubads.g.doubleclick.net
+        127.0.0.1       redirector.gvt1.com
+        127.0.0.1       s0.2mdn.net
+        127.0.0.1       securepubads.g.doubleclick.net
+        127.0.0.1       spclient.wg.spotify.com
+        127.0.0.1       tpc.googlesyndication.com
+        127.0.0.1       v.jwpcdn.com
+        127.0.0.1       video-ad-stats.googlesyndication.com
+        127.0.0.1       weblb-wg.gslb.spotify.com
+        127.0.0.1       www.googleadservices.com
+        127.0.0.1       www.googletagservices.com
+        127.0.0.1       www.omaze.com
+        &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+        &lt;h2 id=&quot;edit-file-host&quot;&gt;Edit file host&lt;/h2&gt;
+        &lt;p&gt;&lt;strong&gt;Windows user&lt;/strong&gt;&lt;/p&gt;
+        &lt;ul&gt;
+        &lt;li&gt;Buka notepad (text editor) dengan hak akses administrator&lt;/li&gt;
+        &lt;li&gt;Buka file &lt;code class=&quot;highlighter-rouge&quot;&gt;C:\Windows\system32\drivers\etc\hosts&lt;/code&gt;&lt;/li&gt;
+        &lt;li&gt;Tambahkan kode diatas di bagian bawah file&lt;/li&gt;
+        &lt;li&gt;Save&lt;/li&gt;
+        &lt;/ul&gt;
+        &lt;p&gt;&lt;strong&gt;Linux user&lt;/strong&gt;&lt;/p&gt;
+        &lt;ul&gt;
+        &lt;li&gt;Buka text editor dengan hak akses superuser (sudo)&lt;/li&gt;
+        &lt;li&gt;Buka file &lt;code class=&quot;highlighter-rouge&quot;&gt;/etc/hosts&lt;/code&gt;&lt;/li&gt;
+        &lt;li&gt;Tambahkan kode diatas pada bagian bawah file&lt;/li&gt;
+        &lt;li&gt;Save&lt;/li&gt;
+        &lt;/ul&gt;
+        &lt;p&gt;Setelah file berhasil disimpan, sebaiknya restart Spotify kalau sebelumnya telah dibuka. Sekarang tiap kali kita mendengarkan musik dengan spotify, tidak ada lagi iklan yang mengganggu karena telah diblok dengan file host kita.&lt;/p&gt;
+        &lt;h2 id=&quot;referensi&quot;&gt;Referensi&lt;/h2&gt;
+        &lt;ul&gt;
+        &lt;li&gt;https://www.reddit.com/r/Piracy/comments/4kn6rq/comprehensive_guide_to_blocking_ads_on_spotify/&lt;/li&gt;
+        &lt;/ul&gt;</content><author><name>zackad</name></author><category term="id" /><category term="trick" /><category term="tip" /><summary type="html">Inilah cara paling mudah dengerin spotify tanpa terganggu iklan. Tanpa instal software tambahan, tanpa upgrade ke premium, dan tanpa bajak akun punya orang lain.</summary></entry><entry><title type="html">How to Extend Line with ArcGIS</title><link href="http://blog.zackad.com/en/2017/10/07/how-to-extend-line.html" rel="alternate" type="text/html" title="How to Extend Line with ArcGIS" /><published>2017-10-07T00:00:00+07:00</published><updated>2017-10-07T00:00:00+07:00</updated><id>http://blog.zackad.com/en/2017/10/07/how-to-extend-line</id><content type="html" xml:base="http://blog.zackad.com/en/2017/10/07/how-to-extend-line.html">&lt;p&gt;Example of how to extend line feature (eg. road digitation) in order to cleanup the dangels using ArcGIS 10.1.&lt;/p&gt;
+        &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;arcpy&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;arcpy&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;env&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;workspase&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;path/to/workspase&quot;&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;arcpy&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ExtendLine_edit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;dataset.shp&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;distance&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;EXTENSION&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+        &lt;h2 id=&quot;extend-line-example-stand-alone-script&quot;&gt;Extend Line Example (Stand-alone script)&lt;/h2&gt;
+        &lt;p&gt;Clean up street centerlines that were digitized without having set proper snapping environments.&lt;/p&gt;
+        &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# Name: ExtendLine.py&lt;/span&gt;
+        &lt;span class=&quot;c&quot;&gt;# Description:  Clean up street centerlines that were digitized without having&lt;/span&gt;
+        &lt;span class=&quot;c&quot;&gt;#                   set proper snapping environmnets&lt;/span&gt;
+        &lt;span class=&quot;c&quot;&gt;# Author: ESRI&lt;/span&gt;
+        &lt;span class=&quot;c&quot;&gt;# Import system modules&lt;/span&gt;
+        &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;arcpy&lt;/span&gt;
+        &lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;arcpy&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;env&lt;/span&gt;
+        &lt;span class=&quot;c&quot;&gt;# Set environments settings&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;env&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;workspase&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;C:/data&quot;&lt;/span&gt;
+        &lt;span class=&quot;c&quot;&gt;# Make backup copy of streets feature class, since modification with the Editing tools below is permanent&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;streets&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;street.shp&quot;&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;streetsBackup&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;C:/output/streetsBackup.shp&quot;&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;arcpy&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;CopyFeatures_management&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;streets&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;streetsBackup&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;c&quot;&gt;# Trim street lines to clean up the dangles&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;arcpy&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;TrimLine_edit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;streets&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;10 Feet&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;KEEP_SHORT&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;c&quot;&gt;# Extend street lines to clean up the dangles&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;arcpy&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ExtendLine_edit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;streets&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;15 Feet&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;EXTENSION&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+        &lt;h2 id=&quot;reference&quot;&gt;Reference&lt;/h2&gt;
+        &lt;ul&gt;
+        &lt;li&gt;help file of ArcMap 10.1&lt;/li&gt;
+        &lt;/ul&gt;</content><author><name>zackad</name></author><category term="en" /><category term="gis" /><category term="processing" /><summary type="html">Example of how to extend line feature (eg. road digitation) in order to cleanup the dangels using ArcGIS 10.1.</summary></entry><entry><title type="html">SQL Function to Check Crosswind</title><link href="http://blog.zackad.com/en/2017/09/26/sql-function-to-check-crosswind.html" rel="alternate" type="text/html" title="SQL Function to Check Crosswind" /><published>2017-09-26T00:00:00+07:00</published><updated>2017-09-26T00:00:00+07:00</updated><id>http://blog.zackad.com/en/2017/09/26/sql-function-to-check-crosswind</id><content type="html" xml:base="http://blog.zackad.com/en/2017/09/26/sql-function-to-check-crosswind.html">&lt;p&gt;A simple function to check if a wind component is crosswind for airport runway direction planning. Using MySQL as database engine and analysis tool, this function can help to simplify checking usability factor of runway direction with given meteorogical data.&lt;/p&gt;
+        &lt;div class=&quot;language-sql highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;DROP&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;FUNCTION&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;IF&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;EXISTS&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;`is_crosswind`&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;DELIMITER&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;//&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;-- Check if wind component is a crosswind to runway direction based on tresshold value&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;CREATE&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;FUNCTION&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;`is_crosswind`&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+        &lt;span class=&quot;nv&quot;&gt;`tresshold`&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;DOUBLE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;         &lt;span class=&quot;c1&quot;&gt;-- Knot&lt;/span&gt;
+        &lt;span class=&quot;nv&quot;&gt;`runwayDirection`&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;DOUBLE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;   &lt;span class=&quot;c1&quot;&gt;-- Degree&lt;/span&gt;
+        &lt;span class=&quot;nv&quot;&gt;`windDirection`&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;DOUBLE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;     &lt;span class=&quot;c1&quot;&gt;-- Degree&lt;/span&gt;
+        &lt;span class=&quot;nv&quot;&gt;`windSpeed`&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;DOUBLE&lt;/span&gt;          &lt;span class=&quot;c1&quot;&gt;-- Knot&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;-- Return 1 if crosswind, 0 if not&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;RETURNS&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;integer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;LANGUAGE&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;SQL&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;DETERMINISTIC&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;CONTAINS&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;SQL&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;SQL&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;SECURITY&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;DEFINER&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;COMMENT&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;''&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;BEGIN&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;declare&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;angelDeg&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;double&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;declare&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;angelRad&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;double&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;declare&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;crossWind&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;double&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;-- Calculate minimum angel between 2 crossing line&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;-- https://math.stackexchange.com/questions/341749/how-to-get-the-minimum-angle-between-two-crossing-lines&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;angelDeg&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;abs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;abs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;`runwayDirection`&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;`windDirection`&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;180&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;-- convert angel Degree to Radian&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;angelRad&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;180&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;angelDeg&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;crossWind&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sin&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;angelRad&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;`windSpeed`&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;crossWind&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;`tresshold`&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;then&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;END&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;//&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;DELIMITER&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>zackad</name></author><category term="en" /><category term="sql" /><category term="function" /><summary type="html">A simple function to check if a wind component is crosswind for airport runway direction planning. Using MySQL as database engine and analysis tool, this function can help to simplify checking usability factor of runway direction with given meteorogical data.</summary></entry><entry><title type="html">How to Setup Android Development Environment With React Native on Ubuntu 16.04</title><link href="http://blog.zackad.com/en/2017/09/06/setup-android-development-environment-with-react-native-on-ubuntu.html" rel="alternate" type="text/html" title="How to Setup Android Development Environment With React Native on Ubuntu 16.04" /><published>2017-09-06T00:00:00+07:00</published><updated>2017-09-06T00:00:00+07:00</updated><id>http://blog.zackad.com/en/2017/09/06/setup-android-development-environment-with-react-native-on-ubuntu</id><content type="html" xml:base="http://blog.zackad.com/en/2017/09/06/setup-android-development-environment-with-react-native-on-ubuntu.html">&lt;p&gt;Getting started with android development using react-native.&lt;/p&gt;
+        &lt;p&gt;In this guide, we won’t install android studio since we will use standard text editor such as &lt;strong&gt;atom&lt;/strong&gt;, &lt;strong&gt;sublime text&lt;/strong&gt; or even &lt;strong&gt;gedit&lt;/strong&gt;. There’s no need to install full blown IDE to develop android with &lt;code class=&quot;highlighter-rouge&quot;&gt;react-native&lt;/code&gt;. Since all the necessacy tool and process will be using command line. That’s why we want to install minimal amount of tool to save more storage space. Not only that, we won’t install android virtual device (avd) to save more space and use actual device as testing and debug device.&lt;/p&gt;
+        &lt;blockquote&gt;
+        &lt;p&gt;&lt;strong&gt;Note :&lt;/strong&gt; it is recommended to use actual device instead of virtual device.&lt;/p&gt;
+        &lt;/blockquote&gt;
+        &lt;h2 id=&quot;step-1--installing-java-development-kit-jdk&quot;&gt;Step 1 — Installing Java Development Kit (JDK)&lt;/h2&gt;
+        &lt;p&gt;We’ll need java in order to compile source code to apk file. To install java, open your terminal and run following command :&lt;/p&gt;
+        &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt-get &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;openjdk-8-jdk
+        &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+        &lt;p&gt;This will install all the necessary package to start developing java application, in this case android application.&lt;/p&gt;
+        &lt;p&gt;There’s no particular reason why we use &lt;code class=&quot;highlighter-rouge&quot;&gt;openjdk-8&lt;/code&gt;, if you need to use older/newer version or other java sdk feel free to install those.&lt;/p&gt;
+        &lt;h2 id=&quot;step-2--installing-nodejs-and-npm&quot;&gt;Step 2 — Installing NodeJS and NPM&lt;/h2&gt;
+        &lt;p&gt;We need to install nodejs and npm in order to use react-native since react is nodejs module. We will install stable version from ppa maintained by NodeSource (not from ubuntu repository).&lt;/p&gt;
+        &lt;p&gt;For the most recent LST (branch 6.x)&lt;/p&gt;
+        &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;curl &lt;span class=&quot;nt&quot;&gt;-sL&lt;/span&gt; https://deb.nodesource.com/setup_6.x | &lt;span class=&quot;nb&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-E&lt;/span&gt; bash -
+        &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+        &lt;p&gt;This will adding PPA into our repository list. Now we need to update package list and installing nodejs into our system.&lt;/p&gt;
+        &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt-get update
+        &lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt-get &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;nodejs npm
+        &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+        &lt;p&gt;To verify that nodejs and npm is successfully installed, run the following command.&lt;/p&gt;
+        &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;nodejs &lt;span class=&quot;nt&quot;&gt;--version&lt;/span&gt;
+        npm &lt;span class=&quot;nt&quot;&gt;-version&lt;/span&gt;
+        &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+        &lt;p&gt;This will output something like&lt;/p&gt;
+        &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# Output of nodejs --version&lt;/span&gt;
+        v6.10.0
+        &lt;span class=&quot;c&quot;&gt;# Output of npm -version&lt;/span&gt;
+        3.10.10
+        &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+        &lt;h2 id=&quot;step-3--install-and-setup-android-sdk-command-line-tools-only&quot;&gt;Step 3 — Install and Setup Android SDK (Command Line Tools only)&lt;/h2&gt;
+        &lt;h3 id=&quot;create-a-new-folder-in-your-home-directory-named-android&quot;&gt;Create a new folder in your home directory named &lt;em&gt;Android&lt;/em&gt;&lt;/h3&gt;
+        &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;cd
+        mkdir &lt;/span&gt;Android
+        &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+        &lt;h3 id=&quot;download-and-extract-android-sdk-file-into-android-directory&quot;&gt;Download and extract Android sdk file into &lt;em&gt;Android&lt;/em&gt; directory&lt;/h3&gt;
+        &lt;blockquote&gt;
+        &lt;p&gt;Go to &lt;a href=&quot;https://developer.android.com/studio/index.html#downloads&quot;&gt;this page&lt;/a&gt; to download command line tools or we can use &lt;a href=&quot;https://dl.google.com/android/repository/tools_r25.2.3-linux.zip&quot;&gt;this link&lt;/a&gt; as of &lt;strong&gt;2017-03-17&lt;/strong&gt;.&lt;/p&gt;
+        &lt;/blockquote&gt;
+        &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; ~/Android
+        wget https://dl.google.com/android/repository/tools_r25.2.3-linux.zip
+        unzip tools_r25.2.3-linux.zip
+        &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+        &lt;h3 id=&quot;add-android-sdk-into-system-path&quot;&gt;Add android sdk into system PATH&lt;/h3&gt;
+        &lt;p&gt;Now, we have to add android sdk into our PATH so we can use these command from anywhere. Open file &lt;code class=&quot;highlighter-rouge&quot;&gt;.bashrc&lt;/code&gt; from our home directory with text editor. We can use &lt;code class=&quot;highlighter-rouge&quot;&gt;nano&lt;/code&gt; or &lt;code class=&quot;highlighter-rouge&quot;&gt;vim&lt;/code&gt; to edit this file right from terminal.&lt;/p&gt;
+        &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;nano ~/.bashrc
+        &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+        &lt;p&gt;Now, add the following line to the end of file to add android sdk into PATH.&lt;/p&gt;
+        &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;ANDROID_HOME&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;HOME&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;/Android
+        &lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;PATH&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;PATH&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;:&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;ANDROID_HOME&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;/tools
+        &lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;PATH&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;PATH&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;:&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;ANDROID_HOME&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;/platform-tools
+        &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+        &lt;p&gt;We need to restart terminal application for these to take effect.&lt;/p&gt;
+        &lt;h3 id=&quot;installing-the-right-sdk-version&quot;&gt;Installing the right sdk version&lt;/h3&gt;
+        &lt;p&gt;React Native require android version 6 (Marshmallow) ro run, so we need to install sdk tool version 23. After restarting terminal application, we’ll install the necessary sdk tool.&lt;/p&gt;
+        &lt;p&gt;Run this command to open android sdk manager.&lt;/p&gt;
+        &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;android
+        &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+        &lt;p&gt;This will open a new window. From here we can select what package to be installed.&lt;/p&gt;
+        &lt;p&gt;&lt;img src=&quot;https://i.imgur.com/a5kN8gy.png&quot; alt=&quot;SDK Manager&quot; /&gt;&lt;/p&gt;
+        &lt;p&gt;Please make sure that following tool is checked before we click &lt;em&gt;Install Package&lt;/em&gt;&lt;/p&gt;
+        &lt;ul&gt;
+        &lt;li&gt;Tools/Android SKD Tools Rev.25.xx (265 MB)&lt;/li&gt;
+        &lt;li&gt;Tools/Android SKD Platform-tools Rev.25.xx (7.3 MB)&lt;/li&gt;
+        &lt;li&gt;Tools/Android SDK Build-tools Rev 23.0.1 (37.3 MB)&lt;/li&gt;
+        &lt;li&gt;Android 6.0 (API 23)/SDK Platform (67.2 MB)&lt;/li&gt;
+        &lt;li&gt;Android 6.0 (API 23)/Google APIs (176 KB)&lt;/li&gt;
+        &lt;li&gt;Extras/Android Support Repository (322.7 MB)&lt;/li&gt;
+        &lt;/ul&gt;
+        &lt;h2 id=&quot;step-4--installing-react-native&quot;&gt;Step 4 — Installing React Native&lt;/h2&gt;
+        &lt;p&gt;Now, we can install react native command line tool with npm. It is recommended to install this tool globally, so you may need superuser permission. From the terminal, run this command to install react-native-cli.&lt;/p&gt;
+        &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;npm &lt;span class=&quot;nb&quot;&gt;install&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-g&lt;/span&gt; react-native-cli
+        &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+        &lt;p&gt;To verify that react-native successfully installed, run this command to show help message.&lt;/p&gt;
+        &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;react-native &lt;span class=&quot;nt&quot;&gt;--help&lt;/span&gt;
+        &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+        &lt;blockquote&gt;
+        &lt;p&gt;&lt;strong&gt;Note :&lt;/strong&gt; we don’t need &lt;em&gt;-cli&lt;/em&gt; suffix here.&lt;/p&gt;
+        &lt;/blockquote&gt;
+        &lt;h2 id=&quot;step-5--initiating-react-native-application&quot;&gt;Step 5 — Initiating React Native Application&lt;/h2&gt;
+        &lt;p&gt;Use the React Native command line interface to generate a new React Native project called “AwesomeProject”, then run react-native run-android inside the newly created folder.&lt;/p&gt;
+        &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;react-native init AwesomeProject
+        &lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;AwesomeProject
+        react-native run-android
+        &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+        &lt;p&gt;If everything is set up correctly, you should see your new app running in your Android device shortly.&lt;/p&gt;
+        &lt;h2 id=&quot;step-6--connecting-android-device-to-computer&quot;&gt;Step 6 — Connecting Android Device to Computer&lt;/h2&gt;
+        &lt;h3 id=&quot;enable-debugging-over-usb&quot;&gt;Enable Debugging over USB&lt;/h3&gt;
+        &lt;p&gt;Most Android devices can only install and run apps downloaded from Google Play, by default. You will need to enable USB Debugging on your device in order to install your app during development.&lt;/p&gt;
+        &lt;p&gt;To enable USB debugging on your device, you will first need to enable the “Developer options” menu by going to &lt;strong&gt;Settings → About phone&lt;/strong&gt; and then tapping the Build number row at the bottom seven times. You can then go back to &lt;strong&gt;Settings → Developer options&lt;/strong&gt; to enable “USB debugging”.&lt;/p&gt;
+        &lt;h3 id=&quot;plug-in-our-device-via-usb&quot;&gt;Plug in our device via USB&lt;/h3&gt;
+        &lt;p&gt;Let’s now set up an Android device to run our React Native projects. Go ahead and plug in your device via USB to your development machine.&lt;/p&gt;
+        &lt;p&gt;Next, check the manufacturer code by using lsusb (on mac, you must first &lt;code class=&quot;highlighter-rouge&quot;&gt;install lsusb&lt;/code&gt;). lsusb should output something like this:&lt;/p&gt;
+        &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;lsusb
+        Bus 002 Device 002: ID 8087:0024 Intel Corp. Integrated Rate Matching Hub
+        Bus 002 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+        Bus 001 Device 003: ID 22b8:2e76 Motorola PCS
+        Bus 001 Device 002: ID 8087:0024 Intel Corp. Integrated Rate Matching Hub
+        Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+        Bus 004 Device 001: ID 1d6b:0003 Linux Foundation 3.0 root hub
+        Bus 003 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+        &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+        &lt;p&gt;These lines represent the USB devices currently connected to your machine.&lt;/p&gt;
+        &lt;p&gt;You want the line that represents your phone. If you’re in doubt, try unplugging your phone and running the command again:&lt;/p&gt;
+        &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;lsusb
+        Bus 002 Device 002: ID 8087:0024 Intel Corp. Integrated Rate Matching Hub
+        Bus 002 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+        Bus 001 Device 002: ID 8087:0024 Intel Corp. Integrated Rate Matching Hub
+        Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+        Bus 004 Device 001: ID 1d6b:0003 Linux Foundation 3.0 root hub
+        Bus 003 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+        &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+        &lt;p&gt;You’ll see that after removing the phone, the line which has the phone model (“Motorola PCS” in this case) disappeared from the list. This is the line that we care about.&lt;/p&gt;
+        &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Bus 001 Device 003: ID 22b8:2e76 Motorola PCS
+        &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+        &lt;p&gt;From the above line, you want to grab the first four digits from the device ID:&lt;/p&gt;
+        &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;22b8:2e76&lt;/code&gt;&lt;/p&gt;
+        &lt;p&gt;In this case, it’s &lt;code class=&quot;highlighter-rouge&quot;&gt;22b8&lt;/code&gt;. That’s the identifier for Motorola.&lt;/p&gt;
+        &lt;p&gt;You’ll need to input this into your udev rules in order to get up and running:&lt;/p&gt;
+        &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;echo &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;SUBSYSTEM&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;==&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;usb&quot;&lt;/span&gt;, ATTR&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;idVendor&lt;span class=&quot;o&quot;&gt;}==&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;22b8&quot;&lt;/span&gt;, &lt;span class=&quot;nv&quot;&gt;MODE&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;0666&quot;&lt;/span&gt;, &lt;span class=&quot;nv&quot;&gt;GROUP&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;plugdev&quot;&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+        | &lt;span class=&quot;nb&quot;&gt;sudo tee&lt;/span&gt; /etc/udev/rules.d/51-android-usb.rules
+        &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+        &lt;p&gt;Make sure that you replace 22b8 with the identifier you get in the above command.&lt;/p&gt;
+        &lt;p&gt;Now check that your device is properly connecting to ADB, the Android Debug Bridge, by running adb devices.&lt;/p&gt;
+        &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;adb devices
+        List of devices attached
+        emulator-5554 offline   &lt;span class=&quot;c&quot;&gt;# Google emulator&lt;/span&gt;
+        14ed2fcc device         &lt;span class=&quot;c&quot;&gt;# Physical device&lt;/span&gt;
+        &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+        &lt;p&gt;Seeing device in the right column means the device is connected. You must have &lt;strong&gt;only one device connected&lt;/strong&gt; at a time.&lt;/p&gt;
+        &lt;h3 id=&quot;running-our-app&quot;&gt;Running our app&lt;/h3&gt;
+        &lt;p&gt;Type the following in your command prompt to install and launch your app on the device:&lt;/p&gt;
+        &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;react-native run-android
+        &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+        &lt;blockquote&gt;
+        &lt;p&gt;If you get a “bridge configuration isn’t available” error, see &lt;a href=&quot;https://facebook.github.io/react-native/#using-adb-reverse&quot;&gt;Using adb reverse&lt;/a&gt;.
+        Hint : You can also use the React Native CLI to generate and run a Release build (e.g. react-native run-android –configuration Release).&lt;/p&gt;
+        &lt;/blockquote&gt;
+        &lt;h3 id=&quot;connecting-to-the-development-server&quot;&gt;Connecting to the development server&lt;/h3&gt;
+        &lt;p&gt;You can also iterate quickly on a device by connecting to the development server running on your development machine. There are several ways of accomplishing this, depending on whether you have access to a USB cable or a Wi-Fi network.&lt;/p&gt;
+        &lt;h4 id=&quot;method-1--using-adb-reverse-recommended&quot;&gt;Method 1 — Using adb reverse (recommended)&lt;/h4&gt;
+        &lt;p&gt;You can use this method if your device is running Android 5.0 (Lollipop), it has USB debugging enabled, and it is connected via USB to your development machine.&lt;/p&gt;
+        &lt;p&gt;Run the following in a command prompt:&lt;/p&gt;
+        &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;adb reverse tcp:8081 tcp:8081
+        &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+        &lt;p&gt;You can now use &lt;code class=&quot;highlighter-rouge&quot;&gt;Reload JS&lt;/code&gt; from the React Native in-app Developer menu without any additional configuration.&lt;/p&gt;
+        &lt;h4 id=&quot;method-2--connect-via-wi-fi&quot;&gt;Method 2 — Connect via Wi-Fi&lt;/h4&gt;
+        &lt;p&gt;You can also connect to the development server over Wi-Fi. You’ll first need to install the app on your device using a USB cable, but once that has been done you can debug wirelessly by following these instructions. You’ll need your development machine’s current IP address before proceeding.&lt;/p&gt;
+        &lt;p&gt;Open a terminal and type &lt;code class=&quot;highlighter-rouge&quot;&gt;/sbin/ifconfig&lt;/code&gt; to find your machine’s IP address.&lt;/p&gt;
+        &lt;ul&gt;
+        &lt;li&gt;Make sure your laptop and your phone are on the same Wi-Fi network.&lt;/li&gt;
+        &lt;li&gt;Open your React Native app on your device.&lt;/li&gt;
+        &lt;li&gt;You’ll see a red screen with an error. This is OK. The following steps will fix that.&lt;/li&gt;
+        &lt;li&gt;Open the in-app Developer menu.&lt;/li&gt;
+        &lt;li&gt;Go to Dev Settings → Debug server host for device.&lt;/li&gt;
+        &lt;li&gt;Type in your machine’s IP address and the port of the local dev server (e.g. 10.0.1.1:8081).&lt;/li&gt;
+        &lt;li&gt;Go back to the Developer menu and select Reload JS.&lt;/li&gt;
+        &lt;/ul&gt;
+        &lt;h2 id=&quot;step-7--installing-react-native-application-into-device&quot;&gt;Step 7 — Installing React Native Application into Device&lt;/h2&gt;
+        &lt;p&gt;Now that we have setup all the development tools, all we need to do is to test/install our app into device. Please make sure that we have already connecting our device with computer using USB connection.&lt;/p&gt;
+        &lt;p&gt;If we have problem during initiating application with command&lt;/p&gt;
+        &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;react-native run-android
+        &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+        &lt;p&gt;we can manually install apk file using adb. Run this command to install our app into android device.&lt;/p&gt;
+        &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;adb &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;android/app/build/outputs/apk/app-debug.apk
+        &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+        &lt;p&gt;If we want to start developing, we have to start react server and enabling livereload from in app menu. To start react server, enter into root directory of our react project and run this command.&lt;/p&gt;
+        &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;npm start
+        &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+        &lt;p&gt;To enabling live reload :&lt;/p&gt;
+        &lt;ul&gt;
+        &lt;li&gt;open our app that has already installed&lt;/li&gt;
+        &lt;li&gt;press option button and select &lt;strong&gt;Enable Live Reload&lt;/strong&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+        &lt;h2 id=&quot;reference&quot;&gt;Reference&lt;/h2&gt;
+        &lt;ul&gt;
+        &lt;li&gt;https://facebook.github.io/react-native/docs/running-on-device.html&lt;/li&gt;
+        &lt;li&gt;https://facebook.github.io/react-native/docs/getting-started.html&lt;/li&gt;
+        &lt;/ul&gt;</content><author><name>zackad</name></author><category term="en" /><category term="android" /><category term="react" /><summary type="html">Getting started with android development using react-native.</summary></entry><entry><title type="html">Configuring Mapserver With NGINX Using Fast CGI</title><link href="http://blog.zackad.com/en/2017/09/06/configuring-mapserver-with-nginx-using-fast-cgi.html" rel="alternate" type="text/html" title="Configuring Mapserver With NGINX Using Fast CGI" /><published>2017-09-06T00:00:00+07:00</published><updated>2017-09-06T00:00:00+07:00</updated><id>http://blog.zackad.com/en/2017/09/06/configuring-mapserver-with-nginx-using-fast-cgi</id><content type="html" xml:base="http://blog.zackad.com/en/2017/09/06/configuring-mapserver-with-nginx-using-fast-cgi.html">&lt;p&gt;Mapserver is an Open Source platform for publishing spatial data and interactive mapping application to the web. In this tutorial we will using &lt;code class=&quot;highlighter-rouge&quot;&gt;nginx&lt;/code&gt; as reverse proxy to forward request to mapserver cgi process in the backgraound.&lt;/p&gt;
+        &lt;h2 id=&quot;prerequisites&quot;&gt;Prerequisites&lt;/h2&gt;
+        &lt;ul&gt;
+        &lt;li&gt;Mapserver (available in ubuntu main repository 16.04 and above)&lt;/li&gt;
+        &lt;li&gt;nginx webserver&lt;/li&gt;
+        &lt;/ul&gt;
+        &lt;p&gt;This tutorial assuming that mapserver is installed in as &lt;em&gt;/usr/bin/mapserv&lt;/em&gt;, if your mapserver installed in different path, please adapt accordingly.&lt;/p&gt;
+        &lt;h2 id=&quot;configure-mapserver-as-cgi-worker-with-spawn-fcgi&quot;&gt;Configure Mapserver as cgi worker with spawn-fcgi&lt;/h2&gt;
+        &lt;p&gt;Install spawn-fcgi if not already installed.&lt;/p&gt;
+        &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt-get &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;spawn-fcgi
+        &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+        &lt;h2 id=&quot;fast-cgi-config&quot;&gt;Fast CGI config&lt;/h2&gt;
+        &lt;p&gt;Running mapserver as cgi service. Create file in &lt;em&gt;/etc/init.d/mapserv&lt;/em&gt; with superuser privilege. Put this content and save.&lt;/p&gt;
+        &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#!/usr/bin/env sh&lt;/span&gt;
+        &lt;span class=&quot;c&quot;&gt;#&lt;/span&gt;
+        &lt;span class=&quot;c&quot;&gt;# description: Mapserver Service Manager&lt;/span&gt;
+        &lt;span class=&quot;c&quot;&gt;# processname: lt-mapserv&lt;/span&gt;
+        &lt;span class=&quot;c&quot;&gt;# pidfile: /var/run/mapserv.pid&lt;/span&gt;
+        &lt;span class=&quot;c&quot;&gt;# Source function library.&lt;/span&gt;
+        &lt;span class=&quot;c&quot;&gt;#. /etc/init.d/functions&lt;/span&gt;
+        &lt;span class=&quot;c&quot;&gt;# Check that networking is up.&lt;/span&gt;
+        &lt;span class=&quot;c&quot;&gt;#. /etc/sysconfig/network&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$NETWORKING&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;no&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;then
+        &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;exit &lt;/span&gt;0
+        &lt;span class=&quot;k&quot;&gt;fi
+        &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;PREFIX&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/usr
+        &lt;span class=&quot;nv&quot;&gt;NAME&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;mapserv
+        &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/var/run/mapserv.pid
+        &lt;span class=&quot;nv&quot;&gt;DAEMON&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$PREFIX&lt;/span&gt;/bin/spawn-fcgi
+        &lt;span class=&quot;nv&quot;&gt;DAEMON_OPTS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot; -a 127.0.0.1 -p 9999 -F 4 -u www-data -U www-data -P &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$PID&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$PREFIX&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;/bin/mapserv&quot;&lt;/span&gt;
+        start &lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;$&quot;Starting &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$NAME&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt; &quot;&lt;/span&gt;
+        &lt;span class=&quot;nb&quot;&gt;exec&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$DAEMON&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$DAEMON_OPTS&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt; /dev/null
+        daemon &lt;span class=&quot;nt&quot;&gt;--pidfile&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$PID&lt;/span&gt;
+        &lt;span class=&quot;nv&quot;&gt;RETVAL&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$?&lt;/span&gt;
+        &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$RETVAL&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-eq&lt;/span&gt; 0 &lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+        stop &lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;$&quot;Stopping &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$NAME&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt; &quot;&lt;/span&gt;
+        killproc &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$PID&lt;/span&gt;
+        &lt;span class=&quot;c&quot;&gt;#make sure all mapservers are closed&lt;/span&gt;
+        pkill &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; lt-mapserv
+        &lt;span class=&quot;nv&quot;&gt;RETVAL&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$?&lt;/span&gt;
+        &lt;span class=&quot;nb&quot;&gt;echo
+        &lt;/span&gt;&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$RETVAL&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-eq&lt;/span&gt; 0 &lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;then
+        &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;rm&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$PID&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;fi&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+        restart &lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        stop
+        start
+        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;c&quot;&gt;# See how we were called.&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$1&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;in
+        &lt;/span&gt;start&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        start
+        &lt;span class=&quot;p&quot;&gt;;;&lt;/span&gt;
+        stop&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        stop
+        &lt;span class=&quot;p&quot;&gt;;;&lt;/span&gt;
+        status&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        status lt-mapserv
+        &lt;span class=&quot;nv&quot;&gt;RETVAL&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$?&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;;;&lt;/span&gt;
+        restart&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        restart
+        &lt;span class=&quot;p&quot;&gt;;;&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;$&quot;Usage: &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt; {start|stop|status|restart}&quot;&lt;/span&gt;
+        &lt;span class=&quot;nv&quot;&gt;RETVAL&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;2
+        &lt;span class=&quot;p&quot;&gt;;;&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;esac&lt;/span&gt;
+        &lt;span class=&quot;nb&quot;&gt;exit&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$RETVAL&lt;/span&gt;
+        &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+        &lt;p&gt;Add execute permission to the file.&lt;/p&gt;
+        &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;sudo chmod&lt;/span&gt; +x /etc/init.d/mapserv
+        &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+        &lt;p&gt;Start mapserver service with command&lt;/p&gt;
+        &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;sudo&lt;/span&gt; /etc/init.d/mapserv start
+        &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+        &lt;h2 id=&quot;nginx-configuration&quot;&gt;Nginx configuration&lt;/h2&gt;
+        &lt;div class=&quot;language-nginx highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;server&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;kn&quot;&gt;listen&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;80&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;kn&quot;&gt;listen&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;[::]:80&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;kn&quot;&gt;server_name&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;mapserver.local&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;kn&quot;&gt;add_header&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;Access-Control-Allow-Origin&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;kn&quot;&gt;location&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;# Load from /etc/init.d/mapserv
+        &lt;/span&gt;        &lt;span class=&quot;kn&quot;&gt;fastcgi_pass&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;127.0.0.1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;9999&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;kn&quot;&gt;include&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;fastcgi_params&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;kn&quot;&gt;fastcgi_param&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;SCRIPT_NAME&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;/usr/bin/mapserv&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$fastcgi_script_name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+        &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+        &lt;h2 id=&quot;url-rewrite&quot;&gt;URL Rewrite&lt;/h2&gt;
+        &lt;p&gt;From nginx configuration file above, we can add rewrite rule to simplify our resource url. Without rewrite, the url would become&lt;/p&gt;
+        &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;http://mapserver-example.com/?map=/path/to/mapfile.map
+        &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+        &lt;p&gt;If we don’t want to expose sensitive information such as mapfile location, we can hide it using url rewrite.
+        From configuration file above, add the following code to location block&lt;/p&gt;
+        &lt;div class=&quot;language-nginx highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;rewrite&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;^/(.*)&lt;/span&gt;$ &lt;span class=&quot;n&quot;&gt;/?map=/path/to/location/of/mapfile.map&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$1&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;break&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+        &lt;p&gt;So the configuration file would become&lt;/p&gt;
+        &lt;div class=&quot;language-nginx highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# Server block
+        &lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;location&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;# Load from /etc/init.d/mapserv
+        &lt;/span&gt;        &lt;span class=&quot;kn&quot;&gt;fastcgi_pass&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;127.0.0.1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;9999&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;# Rewrite url to hide mapfile path
+        &lt;/span&gt;        &lt;span class=&quot;kn&quot;&gt;rewrite&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;^/(.*)&lt;/span&gt;$ &lt;span class=&quot;n&quot;&gt;/?map=/path/to/location/of/mapfile.map&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$1&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;break&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;kn&quot;&gt;include&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;fastcgi_params&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;kn&quot;&gt;fastcgi_param&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;SCRIPT_NAME&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;/usr/bin/mapserv&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$fastcgi_script_name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+        &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+        &lt;h2 id=&quot;reference&quot;&gt;Reference&lt;/h2&gt;
+        &lt;ul&gt;
+        &lt;li&gt;http://dotrem.blogspot.co.id/2013/06/mapservernginxfastcgi-on-ubuntu.html&lt;/li&gt;
+        &lt;/ul&gt;</content><author><name>zackad</name></author><category term="en" /><category term="linux" /><category term="sysadmin" /><summary type="html">Mapserver is an Open Source platform for publishing spatial data and interactive mapping application to the web. In this tutorial we will using nginx as reverse proxy to forward request to mapserver cgi process in the backgraound.</summary></entry><entry><title type="html">How To Install Allmark - The Markdown Webserver</title><link href="http://blog.zackad.com/en/2017/09/06/allmark-the-markdown-webserver.html" rel="alternate" type="text/html" title="How To Install Allmark - The Markdown Webserver" /><published>2017-09-06T00:00:00+07:00</published><updated>2017-09-06T00:00:00+07:00</updated><id>http://blog.zackad.com/en/2017/09/06/allmark-the-markdown-webserver</id><content type="html" xml:base="http://blog.zackad.com/en/2017/09/06/allmark-the-markdown-webserver.html">&lt;p&gt;allmark is a fast, standalone markdown web server for Linux, Mac OS and Windows written in go.&lt;/p&gt;
+        &lt;p&gt;allmark is a file-system-centric markdown web server. You can &lt;strong&gt;point it at any directory that contains markdown files&lt;/strong&gt; and it will immediately start a web-server that serves the rendered HTML content of the markdown file to you.&lt;/p&gt;
+        &lt;h3 id=&quot;step-1--installing-allmark-webserver&quot;&gt;Step 1 — Installing allmark webserver&lt;/h3&gt;
+        &lt;ul&gt;
+        &lt;li&gt;Download the binary file from &lt;a href=&quot;http://allmark.io/bin&quot;&gt;this page&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;Select the right version based on your system. If you use desktop computer, you may have 64bit system&lt;/li&gt;
+        &lt;li&gt;Use &lt;code class=&quot;highlighter-rouge&quot;&gt;chmod&lt;/code&gt; to add execute permission.&lt;/li&gt;
+        &lt;li&gt;Copy the downloaded file to &lt;code class=&quot;highlighter-rouge&quot;&gt;/usr/local/bin/allmark&lt;/code&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+        &lt;p&gt;All that step can be written to&lt;/p&gt;
+        &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;curl http://allmark.io/bin/files/allmark_linux_amd64 &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; allmark
+        &lt;span class=&quot;nb&quot;&gt;chmod&lt;/span&gt; +x allmark
+        &lt;span class=&quot;nb&quot;&gt;sudo mv &lt;/span&gt;allmark /usr/local/bin/allmark
+        &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+        &lt;h2 id=&quot;step-2--running-allmark-webserver&quot;&gt;Step 2 — Running allmark webserver&lt;/h2&gt;
+        &lt;p&gt;It is recommended to setup configuration wether globally (in your home directory) or locally (on your repository). In this guide, we will config allmark to local repository. Run this command to generate allmark settings.&lt;/p&gt;
+        &lt;ul&gt;
+        &lt;li&gt;Change to your (clonned) repository&lt;/li&gt;
+        &lt;li&gt;Init the setting command&lt;/li&gt;
+        &lt;/ul&gt;
+        &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;path/to/your/repository
+        allmark init
+        &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+        &lt;ul&gt;
+        &lt;li&gt;Open &lt;code class=&quot;highlighter-rouge&quot;&gt;.allmark/config&lt;/code&gt; file with your text editor and search the following line and change the “Enabled” key to &lt;code class=&quot;highlighter-rouge&quot;&gt;true&lt;/code&gt; to enabling livereload when we are editing the content.&lt;/li&gt;
+        &lt;/ul&gt;
+        &lt;div class=&quot;language-json highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;err&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+        &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;LiveReload&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+        &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Enabled&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+        &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+        &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+        &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+        &lt;ul&gt;
+        &lt;li&gt;Start allmark server with command. This will automatically open new page on your default web browser to show the content. If not, please open &lt;code class=&quot;highlighter-rouge&quot;&gt;htttp://localhost:33001&lt;/code&gt; on your browser.&lt;/li&gt;
+        &lt;/ul&gt;
+        &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;allmark serve
+        &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+        &lt;ul&gt;
+        &lt;li&gt;Now you can start editing the markdown file on your repository.&lt;/li&gt;
+        &lt;/ul&gt;
+        &lt;blockquote&gt;
+        &lt;p&gt;&lt;strong&gt;Note :&lt;/strong&gt; if you have rename/add/delete file/folder on your repository, you may need to restart your allmark webserver for those changes to take effect.&lt;/p&gt;
+        &lt;/blockquote&gt;
+        &lt;h2 id=&quot;step-3--stopping-and-restarting-allmark-webserver&quot;&gt;Step 3 — Stopping and Restarting allmark webserver&lt;/h2&gt;
+        &lt;p&gt;If you want to stop or restart allmark webserver, simply to press &lt;kbd&gt;Ctrl&lt;/kbd&gt;+&lt;kbd&gt;C&lt;/kbd&gt; to stop the server. And type command &lt;code class=&quot;highlighter-rouge&quot;&gt;allmark serve&lt;/code&gt; then press &lt;kbd&gt;Enter&lt;/kbd&gt; to start server again.&lt;/p&gt;
+        &lt;h2 id=&quot;reference&quot;&gt;Reference&lt;/h2&gt;
+        &lt;ul&gt;
+        &lt;li&gt;https://github.com/andreaskoch/allmark&lt;/li&gt;
+        &lt;/ul&gt;</content><author><name>zackad</name></author><category term="en" /><category term="markdown-server" /><summary type="html">allmark is a fast, standalone markdown web server for Linux, Mac OS and Windows written in go.</summary></entry><entry><title type="html">SQL Function to Generate Wind Direction</title><link href="http://blog.zackad.com/en/2017/08/23/sql-function-to-generate-wind-direction.html" rel="alternate" type="text/html" title="SQL Function to Generate Wind Direction" /><published>2017-08-23T00:00:00+07:00</published><updated>2017-08-23T00:00:00+07:00</updated><id>http://blog.zackad.com/en/2017/08/23/sql-function-to-generate-wind-direction</id><content type="html" xml:base="http://blog.zackad.com/en/2017/08/23/sql-function-to-generate-wind-direction.html">&lt;p&gt;Based on &lt;a href=&quot;https://stackoverflow.com/a/39277268/6265296&quot;&gt;Robert Sharp&lt;/a&gt; answer on &lt;a href=&quot;https://stackoverflow.com/questions/14736464/determining-cardinal-compass-direction-between-points&quot;&gt;stack overflow question&lt;/a&gt;, this function is tested on MySQL version 5.7.&lt;/p&gt;
+        &lt;div class=&quot;language-sql highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;DELIMITER&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;//&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;-- Using single parameter to determine wind direction name&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;-- with angel is in decimal or integer&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;CREATE&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;FUNCTION&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;`get_wind_direction`&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;`angel`&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;DOUBLE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;-- Return value as varchar&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;RETURNS&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;varchar&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;CHARSET&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;utf8&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;LANGUAGE&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;SQL&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;DETERMINISTIC&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;CONTAINS&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;SQL&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;SQL&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;SECURITY&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;DEFINER&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;COMMENT&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;''&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;BEGIN&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;`angel`&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;then&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;`angel`&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;`angel`&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;360&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;360&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;`angel`&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;`angel`&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;360&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;case&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;when&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;`angel`&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;between&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;and&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;11&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;25&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;then&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'N'&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;when&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;`angel`&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;between&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;11&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;25&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;and&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;33&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;75&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;then&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'NNE'&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;when&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;`angel`&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;between&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;33&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;75&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;and&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;56&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;25&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;then&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'NE'&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;when&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;`angel`&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;between&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;56&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;25&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;and&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;78&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;25&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;then&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'ENE'&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;when&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;`angel`&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;between&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;78&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;25&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;and&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;101&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;25&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;then&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'E'&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;when&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;`angel`&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;between&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;101&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;25&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;and&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;123&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;75&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;then&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'ESE'&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;when&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;`angel`&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;between&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;123&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;75&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;and&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;146&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;25&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;then&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'SE'&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;when&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;`angel`&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;between&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;146&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;25&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;and&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;168&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;75&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;then&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'SSE'&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;when&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;`angel`&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;between&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;168&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;75&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;and&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;191&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;25&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;then&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'S'&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;when&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;`angel`&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;between&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;191&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;25&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;and&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;213&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;75&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;then&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'SSW'&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;when&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;`angel`&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;between&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;213&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;75&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;and&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;236&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;25&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;then&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'SW'&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;when&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;`angel`&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;between&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;236&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;25&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;and&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;258&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;75&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;then&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'WSW'&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;when&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;`angel`&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;between&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;258&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;75&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;and&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;281&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;25&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;then&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'W'&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;when&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;`angel`&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;between&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;281&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;25&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;and&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;303&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;75&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;then&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'WNW'&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;when&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;`angel`&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;between&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;303&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;75&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;and&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;326&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;25&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;then&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'NW'&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;when&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;`angel`&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;between&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;326&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;25&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;and&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;348&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;75&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;then&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'NNW'&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'N'&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;END&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;//&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;DELIMITER&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+        &lt;p&gt;Example :&lt;/p&gt;
+        &lt;div class=&quot;language-sql highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;mysql&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;select&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;get_wind_direction&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;123&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;-------------------------+&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;get_wind_direction&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;123&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;-------------------------+&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ESE&lt;/span&gt;                     &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;-------------------------+&lt;/span&gt;
+        &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;row&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;00&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sec&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;mysql&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;select&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;get_wind_direction&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;32&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;54&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;---------------------------+&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;get_wind_direction&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;32&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;54&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;---------------------------+&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;NNE&lt;/span&gt;                       &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;---------------------------+&lt;/span&gt;
+        &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;row&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;set&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;00&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sec&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>zackad</name></author><category term="en" /><category term="sql" /><summary type="html">Based on Robert Sharp answer on stack overflow question, this function is tested on MySQL version 5.7.</summary></entry></feed>
