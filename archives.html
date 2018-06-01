@@ -1,0 +1,48 @@
+---
+layout: page
+title: Archives
+permalink: /archives/
+---
+<ul class="archive-list">
+  {% assign year = "" %}
+  {% assign month = "" %}
+  {% for post in site.posts %}
+
+    {% capture post_year %}{{ post.date | date: "%Y" }}{% endcapture %}
+    {% capture post_month %}{{ post.date | date: "%B" }}{% endcapture %}
+
+    {% if post_year == year %}
+
+      {% if post_month == month %}
+
+        <li class="archive-item"><a href="{{ post.url }}">{{ post.title }}</a></li>
+
+      {% else %}
+
+        {% capture month %}{{ post.date | date: "%B" }}{% endcapture %}
+        <span class="month">{{ post_month }}</span>
+        <li class="archive-item"><a href="{{ post.url }}">{{ post.title }}</a></li>
+
+      {% endif %}
+
+    {% else %}
+
+      {% capture year %}{{ post.date | date: "%Y" }}{% endcapture %}
+      <li class="year">{{ post_year }}</li>
+
+      {% if post_month == month %}
+
+        <li>{{ post.title }}</li>
+
+      {% else %}
+
+        {% capture month %}{{ post.date | date: "%B" }}{% endcapture %}
+        <span class="month">{{ post_month }}</span>
+        <li class="archive-item"><a href="{{ post.url }}">{{ post.title }}</a></li>
+
+      {% endif %}
+
+    {% endif %}
+
+  {% endfor %}
+</ul>

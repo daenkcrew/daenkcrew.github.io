@@ -13,29 +13,73 @@
 # you will see them accessed via {{ site.title }}, {{ site.email }}, and so on.
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
-title: IzhharuddinDev
-email: izhharuddinarief@gmail.com
-description: >- # this means to ignore newlines until "baseurl:"
- I'm a simple man. I do what I want and what I could. Otherwise it's a trial and error.
+title: daenkcrewDev
+author: daenkcrew   
+email: daenkcrew.dev@gmail.com
+description: > # this means to ignore newlines until "baseurl:"
+  I'm a simple man. I do what I want and what I could. Otherwise
+  it's a trial and error.
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "" # the base hostname & protocol for your site, e.g. http://example.com
-twitter_username: daenkcrew
-github_username:  daenkcrew
+url: "http://daenkcrew.me" # the base hostname & protocol for your site, e.g. http://example.com
+github_username: daenkcrew
+
+# Sosial media
+social:
+  email: daenkcrew [dot] dev [at] gmail [dot] com
+  github:
+    username: daenkcrew
+    url: https://github.com/daenkcrew
+    enabled: true
+  gitlab:
+    username: daenkcrew
+    url: https://gitlab.com/daenkcrew
+    enabled: false
+  stackoverflow:
+    username: daenkcrew
+    url: https://stackoverflow.com/users/daenkcrew
+    enabled: true
+  twitter:
+    username: daenkcrew
+    url: https://twitter.com/daenkcrew
+    enabled: true
+  youtube:
+    username: daenkcrewDev
+    url: https://www.youtube.com/daenkcrew
+    enabled: false
+
+# Third party services
+disqus:
+  shortname: daenkcrewtech
+google_analytics: UA-105186998-1
 
 # Build settings
+defaults:
+  -
+    scope:
+      path: ""
+      type: "posts"
+    values:
+      category: "en"
+      author: "daenkcrew"
+future: true
 markdown: kramdown
-theme: minima
-plugins:
+plugins_dir:
   - jekyll-feed
-
-# Exclude from processing.
-# The following items will not be processed, by default. Create a custom list
-# to override the default setting.
-# exclude:
-#   - Gemfile
-#   - Gemfile.lock
-#   - node_modules
-#   - vendor/bundle/
-#   - vendor/cache/
-#   - vendor/gems/
-#   - vendor/ruby/
+  - jekyll-tidy
+  - jekyll-sitemap
+  - ./_plugins
+exclude:
+  # Exclude directories
+  - js
+  - node_modules
+  # Exclude files
+  - LICENSE
+  - README.md
+  - Gemfile
+  - Gemfile.lock
+  - deploy_rsa.enc
+  - package.json
+  - package-lock.json
+  - webpack.config.js
+sass:
+  style: compressed

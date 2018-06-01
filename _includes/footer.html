@@ -1,0 +1,32 @@
+<footer class="site-footer">
+  <div class="wrapper">
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <strong>Contact</strong>
+          {% if site.social.email %}
+            <li>{% include icons/icon-email.html email=site.social.email %}</li>
+          {% endif %}
+          {% if site.social.github and site.social.github.enabled %}
+            <li>{% include icons/icon-github.html github=site.social.github %}</li>
+          {% endif %}
+          {% if site.social.gitlab and site.social.gitlab.enabled %}
+            <li>{% include icons/icon-gitlab.html gitlab=site.social.gitlab %}</li>
+          {% endif %}
+          {% if site.social.stackoverflow and site.social.stackoverflow.enabled %}
+            <li>{% include icons/icon-stackoverflow.html stackoverflow=site.social.stackoverflow %}</li>
+          {% endif %}
+          {% if site.social.twitter and site.social.twitter.enabled %}
+            <li>{% include icons/icon-twitter.html twitter=site.social.twitter %}</li>
+          {% endif %}
+          {% if site.social.youtube and site.social.youtube.enabled %}
+            <li>{% include icons/icon-youtube.html youtube=site.social.youtube %}</li>
+          {% endif %}
+        </ul>
+      </div>
+      <div class="footer-col footer-col-2">
+        <p>{{ site.description | escape }}</p>
+      </div>
+    </div>
+  </div>
+</footer>
