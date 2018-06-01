@@ -54,27 +54,20 @@ google_analytics: UA-xxxxxxxxx-1
 
 # Build settings
 defaults:
-  -
-    scope:
-      path: ""
-      type: "posts"
-    values:
-      category: "en"
-      author: "daenkcrew"
-future: true
 markdown: kramdown
+theme: minima
 plugins_dir:
   - jekyll-feed
-  - jekyll-tidy
   - jekyll-sitemap
-  - ./_plugins
-exclude:
-  # Exclude directories
-  - js
-  - node_modules
-  # Exclude files
-  - LICENSE
-  - README.md
-  - Gemfile
-sass:
-  style: compressed
+
+# Exclude from processing.
+# The following items will not be processed, by default. Create a custom list
+# to override the default setting.
+# exclude:
+#   - Gemfile
+#   - Gemfile.lock
+#   - node_modules
+#   - vendor/bundle/
+#   - vendor/cache/
+#   - vendor/gems/
+#   - vendor/ruby/
