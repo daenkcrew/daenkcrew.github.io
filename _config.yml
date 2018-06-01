@@ -54,6 +54,14 @@ google_analytics: UA-xxxxxxxxx-1
 
 # Build settings
 defaults:
+-
+    scope:
+      path: ""
+      type: "posts"
+    values:
+      category: "en"
+      author: "zackad"
+      future: true
 markdown: kramdown
 theme: minima
 plugins_dir:
@@ -71,3 +79,6 @@ plugins_dir:
 #   - vendor/cache/
 #   - vendor/gems/
 #   - vendor/ruby/
+
+sass:
+  style: compressed
