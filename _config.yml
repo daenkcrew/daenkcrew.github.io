@@ -60,7 +60,7 @@ defaults:
       type: "posts"
     values:
       category: "en"
-      author: "zackad"
+      author: "daenkcrew"
       future: true
 markdown: kramdown
 theme: minima
