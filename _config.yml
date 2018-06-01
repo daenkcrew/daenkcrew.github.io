@@ -49,8 +49,8 @@ social:
 
 # Third party services
 disqus:
-  shortname: daenkcrewtech
-google_analytics: UA-105186998-1
+  shortname: 
+google_analytics: UA-xxxxxxxxx-1
 
 # Build settings
 defaults:
@@ -76,10 +76,5 @@ exclude:
   - LICENSE
   - README.md
   - Gemfile
-  - Gemfile.lock
-  - deploy_rsa.enc
-  - package.json
-  - package-lock.json
-  - webpack.config.js
 sass:
   style: compressed
